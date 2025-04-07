@@ -1,0 +1,125 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'org.springframework.boot' version '3.2.2'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'jacoco'
+    id 'checkstyle'
+}
+
+group = 'university.innopolis'
+version = '1.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+ext {
+    springBootVersion = '3.2.2'
+    springDocVersion = '2.3.0'
+    jetbrainsAnnotationsVersion = '24.1.0'
+    wiremockVersion = '3.3.1'
+    checkstyleToolVersion = '10.12.7'
+    skipUnitTests = false
+    compilerArgs = []
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot dependencies
+    implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+
+    // Web dependencies
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // Database dependencies
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // Utilities
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    // Development tools
+    runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Metrics
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "io.micrometer:micrometer-registry-prometheus"
+    implementation "io.micrometer:micrometer-tracing-bridge-brave"
+
+    // Test dependencies
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.assertj:assertj-core'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testImplementation "org.wiremock:wiremock-standalone:${wiremockVersion}"
+
+    // Testcontainers
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:postgresql'
+    testImplementation 'org.flywaydb:flyway-core'
+
+    // Annotations
+    compileOnly "org.jetbrains:annotations:${jetbrainsAnnotationsVersion}"
+}
+
+configurations {
+    configureEach {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs.addAll(compilerArgs)
+}
+
+tasks.test {
+    useJUnitPlatform()
+    enabled = !skipUnitTests
+    testLogging {
+        events 'passed'
+    }
+}
+
+jacocoTestReport {
+    dependsOn test
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    // TODO: add excluded classes
+            ])
+        }))
+    }
+}
+
+checkstyle {
+    toolVersion = checkstyleToolVersion
+    configFile = file('checkstyle.xml')
+    checkstyleTest.enabled = false
+}
+
+processResources {
+    filteringCharset = 'UTF-8'
+    filesMatching('**/*.properties') {
+        expand(project.properties)
+    }
+}
+
+jar {
+    enabled = false
+}
