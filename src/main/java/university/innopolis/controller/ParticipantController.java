@@ -1,5 +1,8 @@
 package university.innopolis.controller;
 
+import jakarta.validation.Valid;
+import university.innopolis.dto.ParticipantRequest;
+import university.innopolis.dto.ParticipantResponse;
 import university.innopolis.entity.Participant;
 import university.innopolis.entity.ParticipantEvent;
 import university.innopolis.service.ParticipantService;
@@ -17,8 +20,10 @@ public class ParticipantController {
     }
 
     @PostMapping
-    public Participant register(@RequestBody Participant p) {
-        return service.registerParticipant(p);
+    public ParticipantResponse register(@RequestBody @Valid ParticipantRequest participantRequest) {
+        Participant participant = participantRequest.toEntity();
+        Participant saved = service.registerParticipant(participant);
+        return ParticipantResponse.fromEntity(saved);
     }
 
     @PostMapping("/{participantId}/register/{eventId}")
