@@ -24,4 +24,4 @@ ENV JAR_FILE=tbd-event-planner-1.0.jar
 
 COPY --from=build /app/build/libs/${JAR_FILE} /app/application.jar
 
-CMD ["java", "-jar", "/app/application.jar", "--spring.profiles.active=dev"]
+CMD ["java", "-jar", "/app/application.jar", "--spring.profiles.active=k8s"]

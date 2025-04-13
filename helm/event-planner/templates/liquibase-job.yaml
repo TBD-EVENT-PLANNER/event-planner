@@ -7,9 +7,9 @@ metadata:
     component: liquibase
   annotations:
     "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
-  backoffLimit: 1
+  backoffLimit: 10
   template:
     metadata:
       name: {{ include "event-planner.fullname" . }}-liquibase
@@ -24,21 +24,17 @@ spec:
           resources:
             limits:
               cpu: 512m
-              memory: 128Mi
+              memory: 256Mi
             requests:
               cpu: 50m
-              memory: 128Mi
+              memory: 256Mi
           command:
             - sh
             - -c
             - |
-              until pg_isready -h {{ include "event-planner.fullname" . }}-postgresql -p 5432; do
-                echo "Waiting for postgres to be available...";
-                sleep 1;
-              done;
               liquibase --changelog-file={{ .Values.liquibase.changelogFile }} \
                         --driver=org.postgresql.Driver \
-                        --url=jdbc:postgresql://{{ include "event-planner.fullname" . }}-postgresql:5432/$(POSTGRES_DB) \
+                        --url=jdbc:postgresql://event-planner-postgresql:5432/$(POSTGRES_DB) \
                         --username=$(POSTGRES_USER) \
                         --password=$(POSTGRES_PASSWORD) update
           envFrom:
