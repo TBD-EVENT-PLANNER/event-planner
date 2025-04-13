@@ -44,18 +44,18 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          {{- with .Values.livenessProbe }}
-          livenessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.readinessProbe }}
-          readinessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          command:
+            - "java -jar /app/application.jar --spring.profiles.active=${ENV}"
+          env:
+            - name: ENV
+              value: "k8s"
+          envFrom:
+            - secretRef:
+                name: {{ include "event-planner.fullname" . }}-db-secret
           {{- with .Values.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}

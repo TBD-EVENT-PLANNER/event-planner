@@ -8,8 +8,12 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: 8080
       protocol: TCP
       name: http
+    - port: {{ .Values.service.metricsPort }}
+      targetPort: 8081
+      protocol: TCP
+      name: http-metrics
   selector:
     {{- include "event-planner.selectorLabels" . | nindent 4 }}

@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "event-planner.fullname" . }}-liquibase-job
+  labels:
+    app: {{ include "event-planner.name" . }}
+    component: liquibase
+  annotations:
+    "helm.sh/hook": pre-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      name: {{ include "event-planner.fullname" . }}-liquibase
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: liquibase
+          image: "{{ .Values.liquibase.image }}"
+          resources:
+            limits:
+              cpu: 512m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
+          command:
+            - sh
+            - -c
+            - |
+              until pg_isready -h {{ include "event-planner.fullname" . }}-postgresql -p 5432; do
+                echo "Waiting for postgres to be available...";
+                sleep 1;
+              done;
+              liquibase --changelog-file={{ .Values.liquibase.changelogFile }} \
+                        --driver=org.postgresql.Driver \
+                        --url=jdbc:postgresql://{{ include "event-planner.fullname" . }}-postgresql:5432/$(POSTGRES_DB) \
+                        --username=$(POSTGRES_USER) \
+                        --password=$(POSTGRES_PASSWORD) update
+          envFrom:
+            - secretRef:
+                name: {{ include "event-planner.fullname" . }}-db-secret
+      restartPolicy: Never
