@@ -1,10 +1,12 @@
 package university.innopolis.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "event")
@@ -87,9 +89,12 @@ public class Event {
     // equals and hashCode (for Hibernate & Set handling)
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Event)) return false;
-        Event event = (Event) o;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Event event)) {
+            return false;
+        }
         return Objects.equals(id, event.id);
     }
 
@@ -101,11 +106,11 @@ public class Event {
     @Override
     public String toString() {
         return "Event{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", eventType='" + eventType + '\'' +
-                ", eventDateTime=" + eventDateTime +
-                ", numberOfSeats=" + numberOfSeats +
-                '}';
+               "id=" + id +
+               ", title='" + title + '\'' +
+               ", eventType='" + eventType + '\'' +
+               ", eventDateTime=" + eventDateTime +
+               ", numberOfSeats=" + numberOfSeats +
+               '}';
     }
 }

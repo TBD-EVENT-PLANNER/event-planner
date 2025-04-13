@@ -1,17 +1,21 @@
 package university.innopolis.controller;
 
 import jakarta.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import university.innopolis.dto.EventRequest;
 import university.innopolis.dto.EventResponse;
 import university.innopolis.dto.ParticipantResponse;
 import university.innopolis.entity.Event;
 import university.innopolis.entity.Participant;
-import university.innopolis.entity.ParticipantEvent;
 import university.innopolis.service.EventService;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/events")
@@ -32,9 +36,9 @@ public class EventController {
     @GetMapping
     public List<EventResponse> getAll() {
         return service.getAllEvents()
-                .stream()
-                .map(EventResponse::fromEntity)
-                .toList();
+            .stream()
+            .map(EventResponse::fromEntity)
+            .toList();
     }
 
     @DeleteMapping("/{id}")
@@ -46,8 +50,8 @@ public class EventController {
     public List<ParticipantResponse> getEventParticipants(@PathVariable Long id) {
         List<Participant> participants = service.getParticipants(id);
         return participants.stream()
-                .map(ParticipantResponse::fromEntity)
-                .collect(Collectors.toList());
+            .map(ParticipantResponse::fromEntity)
+            .collect(Collectors.toList());
     }
 }
 

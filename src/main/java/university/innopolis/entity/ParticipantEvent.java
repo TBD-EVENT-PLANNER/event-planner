@@ -1,6 +1,11 @@
 package university.innopolis.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -45,11 +50,14 @@ public class ParticipantEvent implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ParticipantEvent)) return false;
-        ParticipantEvent that = (ParticipantEvent) o;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ParticipantEvent that)) {
+            return false;
+        }
         return Objects.equals(participant, that.participant) &&
-            Objects.equals(event, that.event);
+               Objects.equals(event, that.event);
     }
 
     @Override
@@ -60,8 +68,8 @@ public class ParticipantEvent implements Serializable {
     @Override
     public String toString() {
         return "ParticipantEvent{" +
-            "participant=" + participant +
-            ", event=" + event +
-            '}';
+               "participant=" + participant +
+               ", event=" + event +
+               '}';
     }
 }

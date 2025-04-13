@@ -1,7 +1,11 @@
 package university.innopolis.entity;
 
-import jakarta.persistence.*;
-import java.time.ZonedDateTime;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
@@ -21,7 +25,8 @@ public class Participant {
         this.lastName = lastName;
     }
 
-    public Participant() {}
+    public Participant() {
+    }
 
     public Long getId() {
         return id;

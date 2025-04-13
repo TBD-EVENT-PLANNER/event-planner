@@ -1,16 +1,20 @@
 package university.innopolis.controller;
 
 import jakarta.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import university.innopolis.dto.EventResponse;
 import university.innopolis.dto.ParticipantRequest;
 import university.innopolis.dto.ParticipantResponse;
 import university.innopolis.entity.Participant;
-import university.innopolis.entity.ParticipantEvent;
 import university.innopolis.service.ParticipantService;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/participants")
@@ -37,8 +41,8 @@ public class ParticipantController {
     public List<EventResponse> getEvents(@PathVariable Long participantId) {
         var events = service.getParticipantEvents(participantId);
         return events.stream()
-                .map(EventResponse::fromEntity)
-                .collect(Collectors.toList());
+            .map(EventResponse::fromEntity)
+            .collect(Collectors.toList());
     }
 
     @DeleteMapping("/{participantId}/unregister/{eventId}")

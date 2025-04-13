@@ -1,10 +1,10 @@
 package university.innopolis.dto;
 
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
-import university.innopolis.entity.Event;
 import java.time.ZonedDateTime;
+import university.innopolis.entity.Event;
 
 public record EventRequest(
     @NotEmpty(message = "Title is required")

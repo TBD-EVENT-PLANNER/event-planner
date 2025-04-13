@@ -1,14 +1,13 @@
 package university.innopolis.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 import university.innopolis.entity.Event;
 import university.innopolis.entity.Participant;
 import university.innopolis.entity.ParticipantEvent;
 import university.innopolis.repository.EventRepository;
-import org.springframework.stereotype.Service;
 import university.innopolis.repository.ParticipantEventRepository;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -35,7 +34,7 @@ public class EventService {
     public List<Participant> getParticipants(Long eventId) {
         List<ParticipantEvent> participantEvents = participantEventRepository.findByEventId(eventId);
         return participantEvents.stream()
-                .map(ParticipantEvent::getParticipant)
-                .collect(Collectors.toList());
+            .map(ParticipantEvent::getParticipant)
+            .collect(Collectors.toList());
     }
 }
