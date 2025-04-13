@@ -21,6 +21,7 @@ spec:
       containers:
         - name: liquibase
           image: "{{ .Values.liquibase.image }}"
+          imagePullPolicy: Always
           resources:
             limits:
               cpu: 512m
