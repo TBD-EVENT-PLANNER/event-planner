@@ -24,13 +24,24 @@ public class ParticipantService {
     }
 
     public void registerToEvent(Long participantId, Long eventId) {
-        var participant = participantRepo.findById(participantId).orElseThrow();
-        var event = eventRepo.findById(eventId).orElseThrow();
-        var reg = new ParticipantEvent();
-        reg.setParticipant(participant);
-        reg.setEvent(event);
-        registrationRepo.save(reg);
+        var participant = participantRepo.findById(participantId)
+                .orElseThrow(() -> new IllegalArgumentException("Participant not found"));
+
+        var event = eventRepo.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+
+        long currentRegistrations = registrationRepo.countByEventId(eventId);
+
+        if (currentRegistrations >= event.getNumberOfSeats()) {
+            throw new IllegalStateException("Cannot register: event is full");
+        }
+
+        var registration = new ParticipantEvent();
+        registration.setParticipant(participant);
+        registration.setEvent(event);
+        registrationRepo.save(registration);
     }
+
 
     public List<Event> getParticipantEvents(Long id) {
         List<ParticipantEvent> participantEvents = registrationRepo.findByParticipantId(id);
