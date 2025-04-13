@@ -17,22 +17,46 @@ public class EventController {
     }
 
     @PostMapping
-    public Event createEvent(@RequestBody Event event) {
-        return service.createEvent(event);
+    public EventDto createEvent(@RequestBody EventDto dto) {
+        Event event = mapToEntity(dto);
+        Event saved = service.createEvent(event);
+        return mapToDto(saved);
     }
 
     @GetMapping
-    public List<Event> getAll() {
-        return service.getAllEvents();
+    public List<EventDto> getAll() {
+        return service.getAllEvents()
+                .stream()
+                .map(this::mapToDto)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Event getById(@PathVariable Long id) {
-        return service.getEvent(id);
+    public EventDto getById(@PathVariable Long id) {
+        return mapToDto(service.getEvent(id));
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.deleteEvent(id);
     }
+
+    private EventDto mapToDto(Event event) {
+        return new EventDto(
+                event.getId(),
+                event.getTitle(),
+                event.getEventType(),
+                event.getEventDateTime(),
+                event.getNumberOfSeats()
+        );
+    }
+    private Event mapToEntity(EventDto dto) {
+        Event event = new Event();
+        event.setTitle(dto.title());
+        event.setEventType(dto.eventType());
+        event.setEventDateTime(dto.eventDateTime());
+        event.setNumberOfSeats(dto.numberOfSeats());
+        return event;
+    }
 }
+

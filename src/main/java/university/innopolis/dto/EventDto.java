@@ -1,4 +1,12 @@
 package university.innopolis.dto;
 
-public class EventDto {
-}
+import java.time.ZonedDateTime;
+
+public record EventDto(
+        Long id, String title,
+        String eventType,
+        ZonedDateTime eventDateTime,
+        int numberOfSeats
+) {}
+
+
