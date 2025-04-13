@@ -5,7 +5,5 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="init-scripts/2025-03-01--01-create-event-table.sql" relativeToChangelogFile="true"/>
-    <include file="init-scripts/2025-03-01--02-create-event-registration-table.sql" relativeToChangelogFile="true"/>
-    <include file="init-scripts/2025-03-01--03-create-event-id-index.sql" relativeToChangelogFile="true"/>
+    <include file="init-scripts/2025-03-01--01-init.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
