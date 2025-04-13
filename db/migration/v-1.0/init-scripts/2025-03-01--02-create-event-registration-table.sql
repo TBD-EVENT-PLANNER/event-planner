@@ -7,7 +7,6 @@ CREATE TABLE event_registration
     first_name        VARCHAR(100) NOT NULL,
     last_name         VARCHAR(100) NOT NULL,
     event_id          BIGINT       NOT NULL,
-    registration_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_event_registration_event FOREIGN KEY (event_id)
         REFERENCES event (id)
         ON DELETE CASCADE
