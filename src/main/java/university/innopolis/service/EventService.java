@@ -24,17 +24,12 @@ public class EventService {
         return repo.findAll();
     }
 
-    public Event getEvent(Long id) {
-        return repo.findById(id).orElseThrow();
-    }
+//    public List<Event> getParticipants(Long eventId) {
+//        return repo.();
+//    }
 
-    public List<Participant> getParticipantsByEventId(Long id){
-        throw new NotImplementedException();
-    }
 
-    public boolean registerParticipant(Long participantId, Long eventId){
-        throw new NotImplementedException();
-    }
+
 
     public void deleteEvent(Long id) {
         repo.deleteById(id);
