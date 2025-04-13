@@ -1,4 +1,4 @@
-name: Event Planner Build
+name: Event Planner Migration Image Preparing
 
 on:
   workflow_dispatch:
@@ -17,7 +17,6 @@ jobs:
   build-push:
     runs-on: ubuntu-latest
     name: Build and Push
-    needs: [ lint-test ]
     permissions:
       contents: read
       packages: write
