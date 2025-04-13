@@ -5,6 +5,7 @@ import university.innopolis.entity.*;
 import university.innopolis.repository.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ParticipantService {
@@ -31,8 +32,11 @@ public class ParticipantService {
         registrationRepo.save(reg);
     }
 
-    public List<ParticipantEvent> getParticipantEvents(Long participantId) {
-        return registrationRepo.findByParticipantId(participantId);
+    public List<Event> getParticipantEvents(Long id) {
+        List<ParticipantEvent> participantEvents = registrationRepo.findByParticipantId(id);
+        return participantEvents.stream()
+            .map(ParticipantEvent::getEvent)
+            .collect(Collectors.toList());
     }
 
     public void deleteRegistration(Long participantId, Long eventId) {
