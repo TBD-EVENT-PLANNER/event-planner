@@ -1,15 +1,23 @@
 spring:
   application:
     name: event-planner
+
   datasource:
     url: "jdbc:postgresql://localhost:5432/${POSTGRES_DB}"
     username: "${POSTGRES_USER}"
     password: "${POSTGRES_PASSWORD}"
     driver-class-name: org.postgresql.Driver
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
 springdoc:
   swagger-ui:
-    path: "/swagger-ui"
+    path: /swagger-ui
 
 server:
   port: 8080
@@ -22,11 +30,11 @@ management:
     port: 8081
   endpoints:
     web:
-      base-path: "/"
+      base-path: /
       exposure:
-        include: "health,info,prometheus"
+        include: health,info,prometheus
       path-mapping:
-        "prometheus": "/metrics"
+        prometheus: /metrics
   endpoint:
     info:
       enabled: true
@@ -36,4 +44,4 @@ management:
       enabled: true
   metrics:
     tags:
-      "application": ${spring.application.name}
+      application: ${spring.application.name}
