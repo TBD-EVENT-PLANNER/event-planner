@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import university.innopolis.dto.EventRequest;
 import university.innopolis.dto.EventResponse;
 import university.innopolis.entity.Event;
+import university.innopolis.entity.ParticipantEvent;
 import university.innopolis.service.EventService;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,12 @@ public class EventController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.deleteEvent(id);
+    }
+
+    @GetMapping("/{id}/participants")
+    public List<ParticipantEvent> getEventParticipants(@PathVariable Long id) {
+        var obj = service.getParticipants(id);
+        return obj;
     }
 }
 
