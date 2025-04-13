@@ -2,6 +2,7 @@ package university.innopolis.controller;
 
 import university.innopolis.dto.EventDto;
 import university.innopolis.entity.Event;
+import university.innopolis.entity.Participant;
 import university.innopolis.service.EventService;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,16 @@ public class EventController {
     @GetMapping("/{id}")
     public Event getById(@PathVariable Long id) {
         return service.getEvent(id);
+    }
+
+    @GetMapping("/{id}/participants")
+    public List<Participant> getParticipantsByEventId(@PathVariable Long id) {
+        return service.getParticipantsByEventId(id);
+    }
+
+    @PostMapping("/{id}/participants")
+    public boolean registerParticipant(@PathVariable Long id, @RequestBody Long userId) {
+        return service.registerParticipant(id, userId);
     }
 
     @DeleteMapping("/{id}")
