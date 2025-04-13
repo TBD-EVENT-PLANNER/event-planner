@@ -8,8 +8,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
+@Setter @Getter @Entity
 @IdClass(ParticipantEventId.class)
 @Table(name = "participant_event")
 public class ParticipantEvent implements Serializable {
@@ -29,22 +31,6 @@ public class ParticipantEvent implements Serializable {
 
     public ParticipantEvent(Participant participant, Event event) {
         this.participant = participant;
-        this.event = event;
-    }
-
-    public Participant getParticipant() {
-        return participant;
-    }
-
-    public void setParticipant(Participant participant) {
-        this.participant = participant;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
         this.event = event;
     }
 

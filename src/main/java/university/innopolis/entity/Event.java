@@ -7,10 +7,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import lombok.Getter;
 
-@Entity
+@Getter @Entity
 @Table(name = "event")
 public class Event {
+    // Getters and setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,41 +39,20 @@ public class Event {
         this.numberOfSeats = numberOfSeats;
     }
 
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getEventType() {
-        return eventType;
-    }
-
     public void setEventType(String eventType) {
         this.eventType = eventType;
     }
 
-    public ZonedDateTime getEventDateTime() {
-        return eventDateTime;
-    }
-
     public void setEventDateTime(ZonedDateTime eventDateTime) {
         this.eventDateTime = eventDateTime;
-    }
-
-    public int getNumberOfSeats() {
-        return numberOfSeats;
     }
 
     public void setNumberOfSeats(int numberOfSeats) {

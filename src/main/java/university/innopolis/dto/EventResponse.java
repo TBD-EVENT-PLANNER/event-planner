@@ -1,7 +1,7 @@
 package university.innopolis.dto;
 
-import university.innopolis.entity.Event;
 import java.time.ZonedDateTime;
+import university.innopolis.entity.Event;
 
 public record EventResponse(
     Long id,
