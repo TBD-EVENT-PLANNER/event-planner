@@ -42,8 +42,8 @@ public class ParticipantEvent implements Serializable {
         if (!(o instanceof ParticipantEvent that)) {
             return false;
         }
-        return Objects.equals(participant, that.participant) &&
-               Objects.equals(event, that.event);
+        return Objects.equals(participant, that.participant)
+               && Objects.equals(event, that.event);
     }
 
     @Override
@@ -53,9 +53,6 @@ public class ParticipantEvent implements Serializable {
 
     @Override
     public String toString() {
-        return "ParticipantEvent{" +
-               "participant=" + participant +
-               ", event=" + event +
-               '}';
+        return "ParticipantEvent{" + "participant=" + participant + ", event=" + event + '}';
     }
 }

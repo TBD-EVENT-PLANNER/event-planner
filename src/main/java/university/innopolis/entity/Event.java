@@ -86,12 +86,8 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event{" +
-               "id=" + id +
-               ", title='" + title + '\'' +
-               ", eventType='" + eventType + '\'' +
-               ", eventDateTime=" + eventDateTime +
-               ", numberOfSeats=" + numberOfSeats +
-               '}';
+        return "Event{" + "id=" + id + ", title='" + title
+               + '\'' + ", eventType='" + eventType + '\'' + ", eventDateTime="
+               + eventDateTime + ", numberOfSeats=" + numberOfSeats + '}';
     }
 }
