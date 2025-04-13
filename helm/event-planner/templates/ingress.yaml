@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "event-planner.fullname" . }}
+  name: team-tbd-ingress
   labels:
     {{- include "event-planner.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -24,20 +24,13 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
-      http:
+    - http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            {{- with .pathType }}
-            pathType: {{ . }}
-            {{- end }}
+          - path: /team-tbd/event-planner
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: {{ include "event-planner.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
-          {{- end }}
-    {{- end }}
 {{- end }}
