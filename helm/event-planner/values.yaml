@@ -127,5 +127,5 @@ postgresql:
 
 liquibase:
   image: "ghcr.io/tbd-event-planner/event-planner-migrations:pr-9"
-  changelogFile: "db.master-changelog.xml"
+  changelogFile: "/liquibase/changelog/db.master-changelog.xml"
 
