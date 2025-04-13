@@ -21,6 +21,8 @@ public class Participant {
         this.lastName = lastName;
     }
 
+    public Participant() {}
+
     public Long getId() {
         return id;
     }

@@ -1,6 +1,5 @@
 package university.innopolis.dto;
 
-import university.innopolis.entity.Event;
 import university.innopolis.entity.Participant;
 
 public record ParticipantResponse(
