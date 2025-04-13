@@ -1,8 +1,9 @@
 package university.innopolis.controller;
 
-import university.innopolis.dto.EventDto;
+import jakarta.validation.Valid;
+import university.innopolis.dto.EventRequest;
+import university.innopolis.dto.EventResponse;
 import university.innopolis.entity.Event;
-import university.innopolis.entity.Participant;
 import university.innopolis.service.EventService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,33 +19,18 @@ public class EventController {
     }
 
     @PostMapping
-    public EventDto createEvent(@RequestBody EventDto dto) {
-        Event event = mapToEntity(dto);
+    public EventResponse create(@RequestBody @Valid EventRequest eventRequest) {
+        Event event = eventRequest.toEntity();
         Event saved = service.createEvent(event);
-        return mapToDto(saved);
+        return EventResponse.fromEntity(saved);
     }
 
     @GetMapping
-    public List<EventDto> getAll() {
+    public List<EventResponse> getAll() {
         return service.getAllEvents()
                 .stream()
-                .map(this::mapToDto)
+                .map(EventResponse::fromEntity)
                 .toList();
-    }
-
-    @GetMapping("/{id}")
-    public EventDto getById(@PathVariable Long id) {
-        return mapToDto(service.getEvent(id));
-    }
-
-    @GetMapping("/{id}/participants")
-    public List<Participant> getParticipantsByEventId(@PathVariable Long id) {
-        return service.getParticipantsByEventId(id);
-    }
-
-    @PostMapping("/{id}/participants")
-    public boolean registerParticipant(@PathVariable Long id, @RequestBody Long userId) {
-        return service.registerParticipant(id, userId);
     }
 
     @DeleteMapping("/{id}")
@@ -52,22 +38,5 @@ public class EventController {
         service.deleteEvent(id);
     }
 
-    private EventDto mapToDto(Event event) {
-        return new EventDto(
-                event.getId(),
-                event.getTitle(),
-                event.getEventType(),
-                event.getEventDateTime(),
-                event.getNumberOfSeats()
-        );
-    }
-    private Event mapToEntity(EventDto dto) {
-        Event event = new Event();
-        event.setTitle(dto.title());
-        event.setEventType(dto.eventType());
-        event.setEventDateTime(dto.eventDateTime());
-        event.setNumberOfSeats(dto.numberOfSeats());
-        return event;
-    }
 }
 
