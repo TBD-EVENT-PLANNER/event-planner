@@ -17,7 +17,7 @@ spring:
 
 springdoc:
   swagger-ui:
-    use-root-path: true
+    path: /team-6/swagger-ui
 
 server:
   port: 8080

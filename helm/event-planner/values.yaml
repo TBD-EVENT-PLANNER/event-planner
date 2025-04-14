@@ -54,6 +54,7 @@ ingress:
   enabled: true
   className: "public"
   annotations: {}
+#    nginx.ingress.kubernetes.io/rewrite-target: /$1
   hosts:
     - paths:
         - path: /team-6/event-planner
