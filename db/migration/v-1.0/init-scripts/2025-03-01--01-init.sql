@@ -2,14 +2,15 @@ CREATE TABLE event (
     id                BIGSERIAL PRIMARY KEY,
     title             VARCHAR(255) NOT NULL,
     event_type        VARCHAR(50) NOT NULL, -- Meetup, Conference, Concert, etc.
-    event_date_time   TIMESTAMP WITH TIME ZONE NOT NULL,
+    event_date_time   TIMESTAMPTZ NOT NULL,
     number_of_seats   INT NOT NULL
 );
 
 CREATE TABLE participant (
     id                BIGSERIAL PRIMARY KEY,
     first_name        VARCHAR(100) NOT NULL,
-    last_name         VARCHAR(100) NOT NULL
+    last_name         VARCHAR(100) NOT NULL,
+    email             VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE participant_event (

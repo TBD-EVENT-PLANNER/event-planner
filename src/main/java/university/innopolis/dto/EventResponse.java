@@ -1,13 +1,13 @@
 package university.innopolis.dto;
 
+import java.time.LocalDateTime;
 import university.innopolis.entity.Event;
-import java.time.ZonedDateTime;
 
 public record EventResponse(
     Long id,
     String title,
     String eventType,
-    ZonedDateTime eventDateTime,
+    LocalDateTime eventDateTime,
     int numberOfSeats
 ) {
     public static EventResponse fromEntity(Event event) {
