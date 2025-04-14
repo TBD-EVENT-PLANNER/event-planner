@@ -17,7 +17,7 @@ spring:
 
 springdoc:
   swagger-ui:
-    path: /swagger-ui
+    path: /team-6/swagger-ui
 
 server:
   port: 8080
@@ -30,7 +30,7 @@ management:
     port: 8081
   endpoints:
     web:
-      base-path: /
+      base-path: /team-6
       exposure:
         include: health,info,prometheus
       path-mapping:

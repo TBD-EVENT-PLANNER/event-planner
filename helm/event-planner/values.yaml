@@ -45,7 +45,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: LoadBalancer
+  type: ClusterIP
   port: 8080
   metricsPort: 8081
 
@@ -57,7 +57,7 @@ ingress:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
   hosts:
     - paths:
-        - path: /team-tbd/event-planner
+        - path: /team-6/event-planner
           pathType: ImplementationSpecific
           backend:
             service:
