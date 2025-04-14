@@ -18,7 +18,8 @@ spring:
 springdoc:
   swagger-ui:
     path: /team-6/swagger-ui
-    configUrl: /team-6/v3/api-docs
+    disable-swagger-default-url: true
+    url: /team-6/v3/api-docs
   api-docs:
     path: /team-6/v3/api-docs
 
