@@ -1,13 +1,13 @@
 package university.innopolis.entity;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class ParticipantEventId implements Serializable {
     private Long participant;
     private Long event;
 
-    public ParticipantEventId() {}
+    public ParticipantEventId() {
+    }
 
     public ParticipantEventId(Long participant, Long event) {
         this.participant = participant;

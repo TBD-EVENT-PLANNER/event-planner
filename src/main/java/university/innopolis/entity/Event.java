@@ -1,10 +1,12 @@
 package university.innopolis.entity;
 
-import jakarta.persistence.*;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "event")
@@ -17,7 +19,7 @@ public class Event {
 
     private String eventType;
 
-    private ZonedDateTime eventDateTime;
+    private LocalDateTime eventDateTime;
 
     private int numberOfSeats;
 
@@ -28,7 +30,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(String title, String eventType, ZonedDateTime eventDateTime, int numberOfSeats) {
+    public Event(String title, String eventType, LocalDateTime eventDateTime, int numberOfSeats) {
         this.title = title;
         this.eventType = eventType;
         this.eventDateTime = eventDateTime;
@@ -60,11 +62,11 @@ public class Event {
         this.eventType = eventType;
     }
 
-    public ZonedDateTime getEventDateTime() {
+    public LocalDateTime getEventDateTime() {
         return eventDateTime;
     }
 
-    public void setEventDateTime(ZonedDateTime eventDateTime) {
+    public void setEventDateTime(LocalDateTime eventDateTime) {
         this.eventDateTime = eventDateTime;
     }
 
@@ -87,8 +89,12 @@ public class Event {
     // equals and hashCode (for Hibernate & Set handling)
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Event)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Event)) {
+            return false;
+        }
         Event event = (Event) o;
         return Objects.equals(id, event.id);
     }
@@ -101,11 +107,11 @@ public class Event {
     @Override
     public String toString() {
         return "Event{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", eventType='" + eventType + '\'' +
-                ", eventDateTime=" + eventDateTime +
-                ", numberOfSeats=" + numberOfSeats +
-                '}';
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", eventType='" + eventType + '\'' +
+            ", eventDateTime=" + eventDateTime +
+            ", numberOfSeats=" + numberOfSeats +
+            '}';
     }
 }
