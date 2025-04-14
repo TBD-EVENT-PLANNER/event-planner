@@ -17,7 +17,9 @@ spring:
 
 springdoc:
   swagger-ui:
-    path: /team-6/swagger-ui
+    path: /swagger-ui
+  webjars:
+    prefix: /team-6
 
 server:
   port: 8080
