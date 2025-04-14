@@ -17,11 +17,8 @@ spring:
 
 springdoc:
   swagger-ui:
-    path: /team-6/swagger-ui
-    url: /team-6/v3/api-docs
+    path: /swagger-ui
     disable-swagger-default-url: true
-  api-docs:
-    path: /team-6/v3/api-docs
 
 server:
   port: 8080
