@@ -1,23 +1,23 @@
 package university.innopolis.service;
 
-import org.springframework.stereotype.Service;
-import university.innopolis.entity.*;
-import university.innopolis.repository.*;
-
 import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import university.innopolis.entity.Event;
+import university.innopolis.entity.Participant;
+import university.innopolis.entity.ParticipantEvent;
+import university.innopolis.entity.ParticipantEventId;
+import university.innopolis.repository.EventRepository;
+import university.innopolis.repository.ParticipantEventRepository;
+import university.innopolis.repository.ParticipantRepository;
 
 @Service
+@RequiredArgsConstructor
 public class ParticipantService {
     private final ParticipantRepository participantRepo;
     private final ParticipantEventRepository registrationRepo;
     private final EventRepository eventRepo;
-
-    public ParticipantService(ParticipantRepository participantRepo, ParticipantEventRepository registrationRepo, EventRepository eventRepo) {
-        this.participantRepo = participantRepo;
-        this.registrationRepo = registrationRepo;
-        this.eventRepo = eventRepo;
-    }
+    private final EmailService emailService;
 
     public Participant registerParticipant(Participant p) {
         return participantRepo.save(p);
@@ -25,10 +25,10 @@ public class ParticipantService {
 
     public void registerToEvent(Long participantId, Long eventId) {
         var participant = participantRepo.findById(participantId)
-                .orElseThrow(() -> new IllegalArgumentException("Participant not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Participant not found"));
 
         var event = eventRepo.findById(eventId)
-                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+            .orElseThrow(() -> new IllegalArgumentException("Event not found"));
 
         long currentRegistrations = registrationRepo.countByEventId(eventId);
 
@@ -42,15 +42,22 @@ public class ParticipantService {
         registrationRepo.save(registration);
     }
 
-
     public List<Event> getParticipantEvents(Long id) {
         List<ParticipantEvent> participantEvents = registrationRepo.findByParticipantId(id);
         return participantEvents.stream()
             .map(ParticipantEvent::getEvent)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     public void deleteRegistration(Long participantId, Long eventId) {
         registrationRepo.deleteById(new ParticipantEventId(participantId, eventId));
+    }
+
+    public void sendVerificationCode(String email) {
+        emailService.sendVerificationCode(email);
+    }
+
+    public boolean verifyCode(String email, String code) {
+        return emailService.verifyCode(email, code);
     }
 }
