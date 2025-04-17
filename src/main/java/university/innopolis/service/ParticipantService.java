@@ -1,7 +1,7 @@
 package university.innopolis.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import university.innopolis.entity.Event;
 import university.innopolis.entity.Participant;
@@ -12,20 +12,12 @@ import university.innopolis.repository.ParticipantEventRepository;
 import university.innopolis.repository.ParticipantRepository;
 
 @Service
+@RequiredArgsConstructor
 public class ParticipantService {
     private final ParticipantRepository participantRepo;
     private final ParticipantEventRepository registrationRepo;
     private final EventRepository eventRepo;
-
-    public ParticipantService(
-        ParticipantRepository participantRepo,
-        ParticipantEventRepository registrationRepo,
-        EventRepository eventRepo
-    ) {
-        this.participantRepo = participantRepo;
-        this.registrationRepo = registrationRepo;
-        this.eventRepo = eventRepo;
-    }
+    private final EmailService emailService;
 
     public Participant registerParticipant(Participant p) {
         return participantRepo.save(p);
@@ -54,10 +46,18 @@ public class ParticipantService {
         List<ParticipantEvent> participantEvents = registrationRepo.findByParticipantId(id);
         return participantEvents.stream()
             .map(ParticipantEvent::getEvent)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     public void deleteRegistration(Long participantId, Long eventId) {
         registrationRepo.deleteById(new ParticipantEventId(participantId, eventId));
+    }
+
+    public void sendVerificationCode(String email) {
+        emailService.sendVerificationCode(email);
+    }
+
+    public boolean verifyCode(String email, String code) {
+        return emailService.verifyCode(email, code);
     }
 }

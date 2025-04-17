@@ -16,13 +16,15 @@ public class Participant {
 
     private String firstName;
     private String lastName;
+    private String email;
 
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
     private Set<ParticipantEvent> events;
 
-    public Participant(String firstName, String lastName) {
+    public Participant(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
     }
 
     public Participant() {
@@ -54,6 +56,14 @@ public class Participant {
 
     public Set<ParticipantEvent> getEvents() {
         return events;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setEvents(Set<ParticipantEvent> events) {

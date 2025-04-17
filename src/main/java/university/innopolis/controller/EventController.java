@@ -2,7 +2,6 @@ package university.innopolis.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,12 +45,17 @@ public class EventController {
         service.deleteEvent(id);
     }
 
+    @GetMapping("/{id}")
+    public EventResponse get(@PathVariable Long id) {
+        return EventResponse.fromEntity(service.getEvent(id));
+    }
+
     @GetMapping("/{id}/participants")
     public List<ParticipantResponse> getEventParticipants(@PathVariable Long id) {
         List<Participant> participants = service.getParticipants(id);
         return participants.stream()
             .map(ParticipantResponse::fromEntity)
-            .collect(Collectors.toList());
+            .toList();
     }
 }
 
