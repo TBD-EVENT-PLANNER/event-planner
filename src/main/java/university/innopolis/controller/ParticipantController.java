@@ -42,8 +42,8 @@ public class ParticipantController {
     public List<EventResponse> getEvents(@PathVariable Long participantId) {
         var events = service.getParticipantEvents(participantId);
         return events.stream()
-                .map(EventResponse::fromEntity)
-                .toList();
+            .map(EventResponse::fromEntity)
+            .toList();
     }
 
     @DeleteMapping("/{participantId}/unregister/{eventId}")
@@ -51,7 +51,7 @@ public class ParticipantController {
         service.deleteRegistration(participantId, eventId);
     }
 
-    @PostMapping("/send-code")
+    @SuppressWarnings("checkstyle:MultipleStringLiterals") @PostMapping("/send-code")
     public ResponseEntity<Void> sendVerificationCode(@RequestBody Map<String, String> payload) {
         String email = payload.get("email");
         service.sendVerificationCode(email);
