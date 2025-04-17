@@ -33,4 +33,11 @@ spec:
                 name: {{ include "event-planner.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
+          - path: /team-6/metrics
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ include "event-planner.fullname" $ }}
+                port:
+                  number: {{ $.Values.service.metricsPort }}
 {{- end }}
