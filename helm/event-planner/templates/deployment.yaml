@@ -58,6 +58,8 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ include "event-planner.fullname" . }}-db-secret
+            - secretRef:
+                name: {{ include "event-planner.fullname" . }}-secret
           {{- with .Values.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
