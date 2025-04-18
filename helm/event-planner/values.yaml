@@ -48,6 +48,7 @@ service:
   type: ClusterIP
   port: 8080
   metricsPort: 8081
+  frontendPort: 3000
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -55,15 +56,6 @@ ingress:
   className: "public"
   annotations: {}
 #    nginx.ingress.kubernetes.io/rewrite-target: /$1
-  hosts:
-    - paths:
-        - path: /team-6/event-planner
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: event-planner
-              port:
-                number: 8080
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -130,3 +122,6 @@ liquibase:
 email:
   username: "Linkinlover@yandex.ru"
   password: "hvstxjkxfadmgwyb"
+
+frontend:
+  image: "vladis7love/react-app:latest"

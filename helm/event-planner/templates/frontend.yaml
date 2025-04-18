@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "event-planner.fullname" . }}-frontend
+  labels:
+    app: {{ include "event-planner.name" . }}-frontend
+    component: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "event-planner.name" . }}-frontend
+      component: frontend
+  template:
+    metadata:
+      labels:
+        app: {{ include "event-planner.name" . }}-frontend
+        component: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: "{{ .Values.frontend.image }}"
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              cpu: 0.4
+              memory: 400Mi
+            requests:
+              cpu: 0.4
+              memory: 400Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "event-planner.fullname" . }}-frontend
+  labels:
+    {{- include "event-planner.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ include "event-planner.name" . }}-frontend
+    component: frontend
+
