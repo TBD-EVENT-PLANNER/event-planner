@@ -2,7 +2,6 @@ package university.innopolis.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import university.innopolis.dto.EmailRequest;
 import university.innopolis.dto.EventResponse;
 import university.innopolis.dto.ParticipantRequest;
 import university.innopolis.dto.ParticipantResponse;
+import university.innopolis.dto.VerificationRequest;
+import university.innopolis.dto.VerificationResponse;
 import university.innopolis.entity.Participant;
 import university.innopolis.service.ParticipantService;
 
@@ -52,17 +54,14 @@ public class ParticipantController {
     }
 
     @SuppressWarnings("checkstyle:MultipleStringLiterals") @PostMapping("/send-code")
-    public ResponseEntity<Void> sendVerificationCode(@RequestBody Map<String, String> payload) {
-        String email = payload.get("email");
-        service.sendVerificationCode(email);
+    public ResponseEntity<Void> sendVerificationCode(@RequestBody EmailRequest payload) {
+        service.sendVerificationCode(payload.email());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/verify-code")
-    public ResponseEntity<Map<String, Boolean>> verifyCode(@RequestBody Map<String, String> payload) {
-        String email = payload.get("email");
-        String code = payload.get("code");
-        boolean success = service.verifyCode(email, code);
-        return ResponseEntity.ok(Map.of("success", success));
+    public ResponseEntity<VerificationResponse> verifyCode(@RequestBody VerificationRequest payload) {
+        Boolean success = service.verifyCode(payload.email(), payload.code());
+        return ResponseEntity.ok(new VerificationResponse(success));
     }
 }
