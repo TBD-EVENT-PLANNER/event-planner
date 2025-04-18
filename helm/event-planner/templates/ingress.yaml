@@ -16,7 +16,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /team-6/swagger-ui
+          - path: /team-6/(.*)
             pathType: ImplementationSpecific
             backend:
               service:

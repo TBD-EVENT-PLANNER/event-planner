@@ -29,9 +29,12 @@ spring:
             enable: true
 
 springdoc:
+  api-docs:
+    path: /swagger-ui/v3/api-docs
   swagger-ui:
     path: /swagger-ui
     disable-swagger-default-url: true
+    use-root-path:
 
 server:
   port: 8080
