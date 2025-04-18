@@ -1,10 +1,17 @@
 package university.innopolis.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
+@Setter @Getter @Entity
 @IdClass(ParticipantEventId.class)
 @Table(name = "participant_event")
 public class ParticipantEvent implements Serializable {
@@ -27,29 +34,16 @@ public class ParticipantEvent implements Serializable {
         this.event = event;
     }
 
-    public Participant getParticipant() {
-        return participant;
-    }
-
-    public void setParticipant(Participant participant) {
-        this.participant = participant;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ParticipantEvent)) return false;
-        ParticipantEvent that = (ParticipantEvent) o;
-        return Objects.equals(participant, that.participant) &&
-            Objects.equals(event, that.event);
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ParticipantEvent that)) {
+            return false;
+        }
+        return Objects.equals(participant, that.participant)
+               && Objects.equals(event, that.event);
     }
 
     @Override
@@ -59,9 +53,6 @@ public class ParticipantEvent implements Serializable {
 
     @Override
     public String toString() {
-        return "ParticipantEvent{" +
-            "participant=" + participant +
-            ", event=" + event +
-            '}';
+        return "ParticipantEvent{" + "participant=" + participant + ", event=" + event + '}';
     }
 }

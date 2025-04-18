@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "event-planner.fullname" . }}-postgresql
+  labels:
+    app: {{ include "event-planner.name" . }}
+    component: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "event-planner.name" . }}
+      component: postgresql
+  template:
+    metadata:
+      labels:
+        app: {{ include "event-planner.name" . }}
+        component: postgresql
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 12 }}
+      {{- end }}
+      containers:
+        - name: postgresql
+          image: "{{ .Values.postgresql.image }}"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: {{ include "event-planner.fullname" . }}-db-secret
+          volumeMounts:
+              - name: postgresql-storage
+                mountPath: /var/lib/postgresql/data
+          resources:
+            limits:
+              cpu: 1
+              memory: 512Mi
+            requests:
+              cpu: 0.45
+              memory: 512Mi
+      volumes:
+        - name: postgresql-storage
+          persistentVolumeClaim:
+            claimName: {{ include "event-planner.fullname" . }}-postgresql-pvc
