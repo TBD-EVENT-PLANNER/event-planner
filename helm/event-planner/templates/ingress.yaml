@@ -16,13 +16,14 @@ spec:
   rules:
     - http:
         paths:
-          - path: /team-6/swagger-ui/(.*)
+          - path: /team-6/swagger-ui(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: {{ include "event-planner.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
+
           - path: /team-6/metrics
             pathType: ImplementationSpecific
             backend:
@@ -30,7 +31,8 @@ spec:
                 name: {{ include "event-planner.fullname" $ }}
                 port:
                   number: {{ $.Values.service.metricsPort }}
-          - path: /team-6/(.*)
+
+          - path: /team-6/(?!swagger-ui)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
