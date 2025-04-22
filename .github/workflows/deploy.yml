@@ -25,9 +25,4 @@ jobs:
 
       - name: Deploy the Helm chart
         run: |
-          helm upgrade \
-          ${{ github.event.repository.name }} \
-          helm/event-planner \
-          --install \
-          --create-namespace \
-          --namespace team-6-ns
+          helm upgrade ${{ github.event.repository.name }} helm/event-planner --install --create-namespace --namespace team-6-ns
