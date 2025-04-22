@@ -1,0 +1,33 @@
+name: Deploy Helm Chart
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    environment: Helm Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Configure Kubeconfig
+        uses: azure/k8s-set-context@v4
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+      - name: Deploy the Helm chart
+        run: |
+          helm upgrade\
+          ${{ github.event.repository.name }}\
+          helm/event-planner\
+          --install\
+          --create-namespace\
+          --namespace team-6-ns
