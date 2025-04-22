@@ -32,7 +32,7 @@ spec:
                 port:
                   number: {{ $.Values.service.metricsPort }}
 
-          - path: /team-6/(?!swagger-ui)(.*)
+          - path: /team-6/(?!swagger-ui|grafana|metrics)(.*)
             pathType: ImplementationSpecific
             backend:
               service:

@@ -20,15 +20,25 @@ spec:
       containers:
         - name: prometheus
           image: "{{ .Values.prometheus.image }}"
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+          volumeMounts:
+            - name: prometheus-config-volume
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
           ports:
             - containerPort: 9090
           resources:
             limits:
-              cpu: 0.4
-              memory: 400Mi
+              cpu: 0.3
+              memory: 256Mi
             requests:
-              cpu: 0.4
-              memory: 400Mi
+              cpu: 0.3
+              memory: 256Mi
+      volumes:
+        - name: prometheus-config-volume
+          configMap:
+            name: prometheus-config
 
 ---
 
@@ -50,21 +60,20 @@ spec:
 
 ---
 
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: team-tbd-ingress
-spec:
-  ingressClassName: public
-  rules:
-    - http:
-        paths:
-          - path: /team-6/(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: {{ include "k8s-infra.fullname" . }}-prometheus
-                port:
-                  number: 9090
+  name: prometheus-config
+  labels:
+    app: prometheus
+data:
+  prometheus.yml: |-
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
 
+    scrape_configs:
+      - job_name: 'metrics-collector'
+        metrics_path: '/team-6/metrics'
+        static_configs:
+          - targets: ['event-planner:8081']

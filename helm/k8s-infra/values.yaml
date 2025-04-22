@@ -124,3 +124,6 @@ affinity: {}
 
 prometheus:
   image: "prom/prometheus"
+
+grafana:
+  image: "grafana/grafana-oss"
