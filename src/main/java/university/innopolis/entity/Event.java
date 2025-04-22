@@ -104,7 +104,7 @@ public class Event {
         return Objects.hash(id);
     }
 
-    @Override
+    @SuppressWarnings("checkstyle:OperatorWrap") @Override
     public String toString() {
         return "Event{" +
             "id=" + id +

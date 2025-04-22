@@ -1,5 +1,6 @@
 package university.innopolis.configuration;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -14,7 +15,7 @@ public record ApplicationConfiguration() {
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
+            public void addCorsMappings(@NotNull CorsRegistry registry) {
                 registry.addMapping("/**")
                     .allowedOrigins(String.format("http://%s:%s", HOST, PORT))
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")

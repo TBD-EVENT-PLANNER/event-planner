@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "k8s-infra.fullname" . }}-prometheus
+  labels:
+    app: {{ include "k8s-infra.name" . }}
+    component: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "k8s-infra.name" . }}
+      component: prometheus
+  template:
+    metadata:
+      labels:
+        app: {{ include "k8s-infra.name" . }}
+        component: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: "{{ .Values.prometheus.image }}"
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+          volumeMounts:
+            - name: prometheus-config-volume
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
+          ports:
+            - containerPort: 9090
+          resources:
+            limits:
+              cpu: 0.3
+              memory: 256Mi
+            requests:
+              cpu: 0.3
+              memory: 256Mi
+      volumes:
+        - name: prometheus-config-volume
+          configMap:
+            name: prometheus-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "k8s-infra.fullname" . }}-prometheus
+  labels:
+    {{- include "k8s-infra.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9090
+      targetPort: 9090
+      protocol: TCP
+      name: http
+  selector:
+    component: prometheus
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  labels:
+    app: prometheus
+data:
+  prometheus.yml: |-
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    scrape_configs:
+      - job_name: 'metrics-collector'
+        metrics_path: '/team-6/metrics'
+        static_configs:
+          - targets: ['event-planner:8081']

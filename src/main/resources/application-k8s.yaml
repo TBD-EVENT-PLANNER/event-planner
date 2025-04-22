@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: event-planner
+
+  datasource:
+    url: "jdbc:postgresql://event-planner-postgresql:5432/${POSTGRES_DB}"
+    username: "${POSTGRES_USER}"
+    password: "${POSTGRES_PASSWORD}"
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: "${USER_MAIL}"
+    password: "${USER_PASSWORD}"
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+    config-url: /team-6/swagger-ui
+  api-docs:
+    path: /swagger-ui/v3/api-docs
+
+server:
+  port: 8080
+  servlet:
+    context-path: /team-6
+
+logging:
+  config: classpath:log4j2-plain.xml
+
+management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      base-path: /team-6
+      exposure:
+        include: health,info,prometheus
+      path-mapping:
+        prometheus: /metrics
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
